@@ -1,15 +1,16 @@
 import './App.css';
 
+import logo from './logo.svg';
+
 import * as React from 'react';
 
-import logo from './logo.svg';
 import pagerDutyGet from './helpers/pagerDutyGet'
 
 class App extends React.Component {
   public componentDidMount() {
     window.console.log('working')
 
-    pagerDutyGet('jkh', 'jasd', {})
+    pagerDutyGet('jkh')
   }
 
   public render() {
