@@ -7,10 +7,37 @@ import * as React from 'react';
 import pagerDutyGet from './helpers/pagerDutyGet'
 
 class App extends React.Component {
-  public componentDidMount() {
-    window.console.log('working')
 
-    pagerDutyGet('jkh')
+
+  public componentDidMount() {
+
+    fetch("https://cors-anywhere.herokuapp.com/https://api.pagerduty.com/schedules", {
+      headers: {
+        "Accept": "application/vnd.pagerduty+json;version=2",
+        "Authorization": "Token token=LxS9M5rWErDQTqVDaQsH"
+      },
+      method: 'GET'
+    })
+      .then(res => {
+        window.console.log(res.json())
+        return res.json()
+      })
+      .then(
+        (result: object) => {
+          this.setState({
+            isLoaded: true,
+          });
+        },
+        // Note: it's important to handle errors here
+        // instead of a catch() block so that we don't swallow
+        // exceptions from actual bugs in components.
+        (error) => {
+          this.setState({
+            error,
+            isLoaded: true
+          });
+        }
+      )
   }
 
   public render() {
