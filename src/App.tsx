@@ -1,10 +1,10 @@
 import './App.css';
 
-import logo from './logo.svg';
-
 import * as React from 'react';
 
-import pagerDutyGet from './helpers/pagerDutyGet'
+import logo from './logo.svg';
+
+// import pagerDutyGet from './helpers/pagerDutyGet'
 
 class App extends React.Component {
 
@@ -19,11 +19,15 @@ class App extends React.Component {
       method: 'GET'
     })
       .then(res => {
-        window.console.log(res.json())
+        window.console.log('poooop')
         return res.json()
       })
+      .then(res => {
+        window.console.log('res.schedules', res.schedules)
+        return res.data.schedules
+      })
       .then(
-        (result: object) => {
+        (schedules: object) => {
           this.setState({
             isLoaded: true,
           });
