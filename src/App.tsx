@@ -17,26 +17,21 @@ class App extends React.Component<any, any> {
   public componentDidMount() {
     this.setState({ isLoaded: false })
 
-    pagerDutyGet('schedules').then(
-      (schedules: object) => {
-        this.setState({
-          isLoaded: true,
-          schedules
-        });
-        window.console.log(this.state)
-      },
-      // Note: it's important to handle errors here
-      // instead of a catch() block so that we don't swallow
-      // exceptions from actual bugs in components.
-      (error) => {
-        this.setState({
-          error,
-          isLoaded: true
-        });
-      }
-    )
-
-    window.console.log('POOOOOP', this.state)
+    fetch('/.netlify/functions/hello')
+      .then(response => response.json())
+      .then(json => json.msg)
+      .then(netlifyResponse => {
+        pagerDutyGet('schedules').then(
+          (schedules: object) => {
+            this.setState({
+              isLoaded: true,
+              schedules
+            });
+            window.console.log('this.state', this.state)
+            window.console.log('netlifyResponse', netlifyResponse)
+          }
+        )
+      })
   }
 
   public render() {

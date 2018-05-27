@@ -13,4 +13,7 @@ export default function pagerdutyRequest(endpoint: string) {
 			window.console.log(jsonResponse[endpoint])
 			return jsonResponse[endpoint]
 		})
+		.catch((error: string) => {
+			window.console.log('An error in your pagerduty fetch has occurred! Error details are as follows: ', error)
+		})
 }
