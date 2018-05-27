@@ -3,59 +3,64 @@ import './App.css';
 import * as React from 'react';
 
 import logo from './logo.svg';
+import pagerDutyGet from './helpers/pagerDutyGet'
 
-// import pagerDutyGet from './helpers/pagerDutyGet'
+class App extends React.Component<any, any> {
+  constructor(props: any) {
+    super(props)
 
-class App extends React.Component {
-
+    this.state = {
+      isLoaded: false
+    }
+  }
 
   public componentDidMount() {
+    this.setState({ isLoaded: false })
 
-    fetch("https://cors-anywhere.herokuapp.com/https://api.pagerduty.com/schedules", {
-      headers: {
-        "Accept": "application/vnd.pagerduty+json;version=2",
-        "Authorization": "Token token=LxS9M5rWErDQTqVDaQsH"
+    pagerDutyGet('schedules').then(
+      (schedules: object) => {
+        this.setState({
+          isLoaded: true,
+          schedules
+        });
+        window.console.log(this.state)
       },
-      method: 'GET'
-    })
-      .then(res => {
-        window.console.log('poooop')
-        return res.json()
-      })
-      .then(res => {
-        window.console.log('res.schedules', res.schedules)
-        return res.data.schedules
-      })
-      .then(
-        (schedules: object) => {
-          this.setState({
-            isLoaded: true,
-          });
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          this.setState({
-            error,
-            isLoaded: true
-          });
-        }
-      )
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        this.setState({
+          error,
+          isLoaded: true
+        });
+      }
+    )
+
+    window.console.log('POOOOOP', this.state)
   }
 
   public render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Gucci Oncall</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
-    );
+    return this.loadApp()
+  }
+
+  private loadApp() {
+    const isLoaded = this.state.isLoaded
+
+    if (isLoaded) {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Gucci Oncall</h1>
+          </header>
+          <p className="App-intro">
+            To get started, edit <code>src/App.tsx</code> and save to reload.
+          </p>
+        </div>
+      )
+    } else {
+      return ('loading!')
+    }
   }
 }
 

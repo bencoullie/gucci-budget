@@ -1,16 +1,16 @@
-
-
 export default function pagerdutyRequest(endpoint: string) {
-	return window.fetch("https://vendhq.pagerduty.com/" + endpoint, {
+	return window.fetch(`https://cors-anywhere.herokuapp.com/https://api.pagerduty.com/${endpoint}`, {
 		headers: {
 			"Accept": "application/vnd.pagerduty+json;version=2",
 			"Authorization": "Token token=LxS9M5rWErDQTqVDaQsH"
 		},
-		method: 'GET',
-		mode: 'no-cors'
+		method: 'GET'
 	})
-	.then(response => response.json())
-	.catch(err => {window.console.log('ERROR: ', err)})
+		.then(response => {
+			return response.json()
+		})
+		.then(jsonResponse => {
+			window.console.log(jsonResponse[endpoint])
+			return jsonResponse[endpoint]
+		})
 }
-
-// pagerdutyRequest('users')

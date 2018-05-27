@@ -1,0 +1,3 @@
+const exampleFunc = () => {
+	return 'Poop!'
+}
