@@ -17,7 +17,11 @@ class App extends React.Component<any, any> {
 
   public componentDidMount() {
     const poop = () => {
-      fetch('/.netlify/functions/hello')
+      fetch('/.netlify/functions/hello', {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
         .then(response => {
           window.console.log('getting here', response.json)
           // return response.json()
