@@ -3,7 +3,8 @@ import './App.css';
 import * as React from 'react';
 
 import logo from './logo.svg';
-import pagerDutyGet from './helpers/pagerDutyGet'
+
+// import pagerDutyGet from './helpers/pagerDutyGet'
 
 class App extends React.Component<any, any> {
   constructor(props: any) {
@@ -15,23 +16,36 @@ class App extends React.Component<any, any> {
   }
 
   public componentDidMount() {
-    this.setState({ isLoaded: false })
-
-    fetch('/.netlify/functions/hello')
-      .then(response => response.json())
-      .then(json => json.msg)
-      .then(netlifyResponse => {
-        pagerDutyGet('schedules').then(
-          (schedules: object) => {
-            this.setState({
-              isLoaded: true,
-              schedules
-            });
-            window.console.log('this.state', this.state)
-            window.console.log('netlifyResponse', netlifyResponse)
-          }
-        )
+    const poop = () => {
+      fetch('/.netlify/functions/hello', {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
+        .then(response => {
+          window.console.log('getting here', response.json)
+          // return response.json()
+        })
+      // .then(json => json)
+      // .then(netlifyResponse => {
+      //   window.console.log('netlifyResponse.msg', netlifyResponse.msg)
+      //   this.setState({
+      //     isLoaded: true
+      //   })
+      // })
+    }
+
+    window.setTimeout(poop, 2000)
+
+    // pagerDutyGet('schedules').then(
+    //   (schedules: object) => {
+    //     this.setState({
+    //       isLoaded: true,
+    //       schedules
+    //     });
+    //     window.console.log('this.state', this.state)
+    //   }
+    // )
   }
 
   public render() {
